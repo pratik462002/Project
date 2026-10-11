@@ -1,25 +1,35 @@
 import React from 'react';
-import { Star, Quote, MapPin, CheckCircle2 } from 'lucide-react';
-import { initialTestimonials } from '../../data/seedTestimonials';
+import { Star, MapPin } from 'lucide-react';
+import { useData } from '../../context/DataContext';
 
 export const TestimonialsSection: React.FC = () => {
+  const { testimonials } = useData();
+
   return (
     <section className="py-20 bg-slate-50 border-b border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs uppercase font-extrabold tracking-wider text-brand-600 block mb-2">
-            Guest Testimonials
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-display">
-            Loved by Pune Travellers
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-600 mt-2">
-            Read firsthand stories from families and group travellers who celebrated their holidays with InstaHoliday Solutions.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-600 font-bold text-xs uppercase tracking-widest mb-3">
+              <span className="text-amber-500 text-[10px]">◆</span>
+              <span>VERIFIED GUEST TESTIMONIALS</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight font-display">
+              Loved by Pune <span className="text-amber-500">Travellers.</span>
+            </h2>
+            <div className="border-l-2 border-amber-400 pl-3.5 mt-2 text-xs sm:text-sm text-slate-600 max-w-xl">
+              Read firsthand stories from families and group travellers who celebrated their holidays with InstaHoliday Solutions.
+            </div>
+          </div>
+          <div className="hidden md:block">
+            <span className="text-xs font-bold text-slate-500 bg-white px-3.5 py-1.5 rounded-full border border-slate-200 shadow-sm">
+              4.9/5 सरासरी रेटिंग • 1,500+ समाधानी पर्यटक
+            </span>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          {initialTestimonials.map((item) => (
+          {testimonials.map((item) => (
             <div
               key={item.id}
               className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-card hover:shadow-hover transition-all duration-300 flex flex-col justify-between"

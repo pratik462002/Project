@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { Package, PackageFilterState } from '../types/package';
 import { Enquiry, EnquiryStatus } from '../types/enquiry';
 import { BlogPost } from '../types/blog';
+import { Testimonial } from '../data/seedTestimonials';
 import { SiteSettings } from '../types/settings';
 import { packageService } from '../services/packageService';
 import { enquiryService } from '../services/enquiryService';
@@ -30,6 +31,10 @@ interface DataContextType {
   saveBlog: (blog: Partial<BlogPost>) => BlogPost;
   deleteBlog: (id: string) => boolean;
 
+  testimonials: Testimonial[];
+  saveTestimonial: (test: Partial<Testimonial>) => Testimonial;
+  deleteTestimonial: (id: string) => boolean;
+
   settings: SiteSettings;
   updateSettings: (settings: SiteSettings) => void;
 }
@@ -48,6 +53,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [packages, setPackages] = useState<Package[]>(() => packageService.getAll());
   const [enquiries, setEnquiries] = useState<Enquiry[]>(() => enquiryService.getAll());
   const [blogs, setBlogs] = useState<BlogPost[]>(() => storageService.getBlogs());
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(() => storageService.getTestimonials());
   const [settings, setSettings] = useState<SiteSettings>(() => storageService.getSettings());
   const [filters, setFilters] = useState<PackageFilterState>(defaultFilters);
 
@@ -56,17 +62,20 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const handlePackagesUpdate = () => setPackages(packageService.getAll());
     const handleEnquiriesUpdate = () => setEnquiries(enquiryService.getAll());
     const handleBlogsUpdate = () => setBlogs(storageService.getBlogs());
+    const handleTestimonialsUpdate = () => setTestimonials(storageService.getTestimonials());
     const handleSettingsUpdate = () => setSettings(storageService.getSettings());
 
     window.addEventListener('instaholiday_packages_updated', handlePackagesUpdate);
     window.addEventListener('instaholiday_enquiries_updated', handleEnquiriesUpdate);
     window.addEventListener('instaholiday_blogs_updated', handleBlogsUpdate);
+    window.addEventListener('instaholiday_testimonials_updated', handleTestimonialsUpdate);
     window.addEventListener('instaholiday_settings_updated', handleSettingsUpdate);
 
     return () => {
       window.removeEventListener('instaholiday_packages_updated', handlePackagesUpdate);
       window.removeEventListener('instaholiday_enquiries_updated', handleEnquiriesUpdate);
       window.removeEventListener('instaholiday_blogs_updated', handleBlogsUpdate);
+      window.removeEventListener('instaholiday_testimonials_updated', handleTestimonialsUpdate);
       window.removeEventListener('instaholiday_settings_updated', handleSettingsUpdate);
     };
   }, []);
@@ -182,6 +191,44 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return true;
   };
 
+  const saveTestimonial = (test: Partial<Testimonial>): Testimonial => {
+    const current = storageService.getTestimonials();
+    let saved: Testimonial;
+    if (test.id) {
+      const idx = current.findIndex((t) => t.id === test.id);
+      if (idx !== -1) {
+        saved = { ...current[idx], ...test } as Testimonial;
+        current[idx] = saved;
+      } else {
+        saved = { ...test, id: 'test-' + Date.now() } as Testimonial;
+        current.unshift(saved);
+      }
+    } else {
+      saved = {
+        id: 'test-' + Date.now(),
+        name: test.name || 'Anonymous Guest',
+        location: test.location || 'Pune',
+        tripTitle: test.tripTitle || 'Tour Package',
+        packageSlug: test.packageSlug || '',
+        comment: test.comment || '',
+        date: test.date || 'Recent Tour',
+        rating: test.rating || 5,
+        photoUrl: test.photoUrl || '/media/group-dubai-1.jpg',
+      };
+      current.unshift(saved);
+    }
+    storageService.saveTestimonials(current);
+    setTestimonials(current);
+    return saved;
+  };
+
+  const deleteTestimonial = (id: string): boolean => {
+    const current = storageService.getTestimonials().filter((t) => t.id !== id);
+    storageService.saveTestimonials(current);
+    setTestimonials(current);
+    return true;
+  };
+
   const updateSettings = (newSettings: SiteSettings) => {
     storageService.saveSettings(newSettings);
     setSettings(newSettings);
@@ -211,6 +258,10 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         blogs,
         saveBlog,
         deleteBlog,
+
+        testimonials,
+        saveTestimonial,
+        deleteTestimonial,
 
         settings,
         updateSettings,

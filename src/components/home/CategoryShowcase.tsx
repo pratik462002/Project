@@ -57,16 +57,24 @@ export const CategoryShowcase: React.FC = () => {
   return (
     <section className="py-16 bg-white border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs uppercase font-extrabold tracking-wider text-brand-600 block mb-2">
-            Curated Styles
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-display">
-            Find Your Ideal Travel Vibe
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-600 mt-2">
-            Whether you seek tropical relaxation, snowy valleys, or modern metropolitan thrills, we have a handcrafted itinerary ready for you.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-600 font-bold text-xs uppercase tracking-widest mb-3">
+              <span className="text-amber-500 text-[10px]">◆</span>
+              <span>CURATED TRAVEL STYLES</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight font-display">
+              Find Your Ideal <span className="text-amber-500">Travel Vibe.</span>
+            </h2>
+            <div className="border-l-2 border-amber-400 pl-3.5 mt-2 text-xs sm:text-sm text-slate-600 max-w-xl">
+              Whether you seek tropical relaxation, snowy valleys, or modern metropolitan thrills, we have a handcrafted itinerary ready for you.
+            </div>
+          </div>
+          <div className="hidden md:block">
+            <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3.5 py-1.5 rounded-full border border-slate-200">
+              पुण्याहून थेट विमानाने व ट्रेनने टूर
+            </span>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

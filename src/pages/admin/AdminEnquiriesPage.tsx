@@ -52,13 +52,47 @@ export const AdminEnquiriesPage: React.FC = () => {
           <span className="text-sm font-bold text-white">Customer Enquiries & Leads</span>
         </div>
 
-        <button
-          onClick={exportEnquiriesCSV}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-sm"
-        >
-          <Download className="w-3.5 h-3.5" />
-          <span>Export CSV</span>
-        </button>
+        {/* Admin Navigation Hub Links */}
+        <div className="flex items-center gap-2 text-xs">
+          <Link
+            to="/admin/dashboard"
+            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium"
+          >
+            Packages
+          </Link>
+          <Link
+            to="/admin/enquiries"
+            className="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold"
+          >
+            Leads
+          </Link>
+          <Link
+            to="/admin/blogs"
+            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium"
+          >
+            Blogs & SEO
+          </Link>
+          <Link
+            to="/admin/testimonials"
+            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium"
+          >
+            Reviews
+          </Link>
+          <Link
+            to="/admin/settings"
+            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium"
+          >
+            Settings
+          </Link>
+
+          <button
+            onClick={exportEnquiriesCSV}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-sm ml-2"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export CSV</span>
+          </button>
+        </div>
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 pt-8">

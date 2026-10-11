@@ -26,6 +26,8 @@ export const AdminPackageEditPage: React.FC = () => {
   const [priceAmount, setPriceAmount] = useState<string>('');
   const [priceLabel, setPriceLabel] = useState('per person');
   const [heroImage, setHeroImage] = useState('');
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [newGalleryInput, setNewGalleryInput] = useState('');
   const [shortDescription, setShortDescription] = useState('');
   const [fullDescription, setFullDescription] = useState('');
   const [inclusionsText, setInclusionsText] = useState('');
@@ -51,6 +53,7 @@ export const AdminPackageEditPage: React.FC = () => {
       setPriceAmount(existing.priceAmount ? String(existing.priceAmount) : '');
       setPriceLabel(existing.priceLabel || 'per person');
       setHeroImage(existing.heroImage);
+      setGalleryImages(existing.galleryImages || []);
       setShortDescription(existing.shortDescription);
       setFullDescription(existing.fullDescription);
       setInclusionsText((existing.inclusions || []).join('\n'));
@@ -90,6 +93,7 @@ export const AdminPackageEditPage: React.FC = () => {
       priceAmount: priceAmount ? Number(priceAmount) : null,
       priceLabel,
       heroImage: heroImage.trim() || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80',
+      galleryImages,
       shortDescription,
       fullDescription,
       inclusions,
@@ -255,16 +259,120 @@ export const AdminPackageEditPage: React.FC = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
-              Hero Cover Image URL
-            </label>
-            <input
-              type="url"
-              value={heroImage}
-              onChange={(e) => setHeroImage(e.target.value)}
-              className="w-full text-xs px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-brand-500 focus:outline-none"
-            />
+          {/* Hero Cover Image & Gallery Manager */}
+          <div className="space-y-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-700/60">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+                Hero Main Cover Image URL *
+              </label>
+              <div className="flex gap-3">
+                <input
+                  type="url"
+                  value={heroImage}
+                  onChange={(e) => setHeroImage(e.target.value)}
+                  placeholder="https://images.unsplash.com/photo-..."
+                  className="flex-1 text-xs px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-brand-500 focus:outline-none"
+                />
+                {heroImage && (
+                  <img
+                    src={heroImage}
+                    alt="Cover preview"
+                    className="w-16 h-10 object-cover rounded-lg border border-slate-700 shrink-0"
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Tour Gallery Images */}
+            <div className="pt-3 border-t border-slate-800">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">
+                Tour Photo Gallery ({galleryImages.length} images)
+              </label>
+              <p className="text-[11px] text-slate-400 mb-3">
+                Add high-resolution destination photos to showcase on the package detail page gallery.
+              </p>
+
+              {/* Add image input bar */}
+              <div className="flex gap-2 mb-4">
+                <input
+                  type="url"
+                  value={newGalleryInput}
+                  onChange={(e) => setNewGalleryInput(e.target.value)}
+                  placeholder="Paste destination image URL..."
+                  className="flex-1 text-xs px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-brand-500 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (newGalleryInput.trim()) {
+                      setGalleryImages([...galleryImages, newGalleryInput.trim()]);
+                      setNewGalleryInput('');
+                    }
+                  }}
+                  className="btn-secondary text-xs px-4 py-2 shrink-0 flex items-center gap-1 font-bold"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Photo</span>
+                </button>
+              </div>
+
+              {/* Quick Preset Buttons */}
+              <div className="mb-4">
+                <span className="text-[10px] uppercase font-bold text-slate-400 mr-2">Quick Presets:</span>
+                <div className="inline-flex flex-wrap gap-1.5 mt-1">
+                  {[
+                    { label: '+ Dubai Skyline', url: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80' },
+                    { label: '+ Kerala Backwaters', url: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80' },
+                    { label: '+ Swiss Alps', url: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1200&q=80' },
+                    { label: '+ Vietnam Bay', url: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80' },
+                    { label: '+ Bali Beach', url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80' },
+                    { label: '+ Andaman Reef', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80' },
+                  ].map((preset, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setGalleryImages([...galleryImages, preset.url])}
+                      className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-semibold border border-slate-700 transition-colors"
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Gallery Image Grid with delete buttons */}
+              {galleryImages.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                  {galleryImages.map((imgUrl, index) => (
+                    <div
+                      key={index}
+                      className="group relative rounded-xl overflow-hidden aspect-video border border-slate-700 bg-slate-900 shadow-sm"
+                    >
+                      <img
+                        src={imgUrl}
+                        alt={`Gallery ${index + 1}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setGalleryImages(galleryImages.filter((_, i) => i !== index))}
+                        className="absolute top-1 right-1 p-1 rounded-full bg-rose-600 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-rose-700 shadow-md"
+                        title="Remove image"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                      <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-[9px] text-white">
+                        #{index + 1}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-4 bg-slate-900/40 rounded-xl border border-dashed border-slate-750 text-slate-500 text-xs">
+                  No additional gallery images added yet. Add URLs or click quick presets above.
+                </div>
+              )}
+            </div>
           </div>
 
           <div>

@@ -18,6 +18,9 @@ import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminPackageEditPage } from './pages/admin/AdminPackageEditPage';
 import { AdminEnquiriesPage } from './pages/admin/AdminEnquiriesPage';
+import { AdminBlogsPage } from './pages/admin/AdminBlogsPage';
+import { AdminTestimonialsPage } from './pages/admin/AdminTestimonialsPage';
+import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
 
 export const App: React.FC = () => {
   const location = useLocation();
@@ -67,6 +70,9 @@ export const App: React.FC = () => {
           <Route path="/admin/packages/new" element={<AdminPackageEditPage />} />
           <Route path="/admin/packages/edit/:id" element={<AdminPackageEditPage />} />
           <Route path="/admin/enquiries" element={<AdminEnquiriesPage />} />
+          <Route path="/admin/blogs" element={<AdminBlogsPage />} />
+          <Route path="/admin/testimonials" element={<AdminTestimonialsPage />} />
+          <Route path="/admin/settings" element={<AdminSettingsPage />} />
 
           {/* Fallback */}
           <Route path="*" element={<HomePage />} />

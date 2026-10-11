@@ -119,10 +119,10 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
 
         {/* Quick Nav Tabs */}
-        <div className="flex items-center gap-3 mb-6 border-b border-slate-800 pb-3">
+        <div className="flex flex-wrap items-center gap-2 mb-6 border-b border-slate-800 pb-3">
           <Link
             to="/admin/dashboard"
-            className="px-3.5 py-1.5 rounded-lg bg-brand-600 text-white text-xs font-bold"
+            className="px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 text-xs font-bold"
           >
             Tour Packages ({packages.length})
           </Link>
@@ -130,12 +130,30 @@ export const AdminDashboardPage: React.FC = () => {
             to="/admin/enquiries"
             className="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
           >
-            Customer Enquiries ({enquiries.length})
+            Leads & Enquiries ({enquiries.length})
           </Link>
-          <div className="ml-auto">
+          <Link
+            to="/admin/blogs"
+            className="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+          >
+            Blogs & SEO
+          </Link>
+          <Link
+            to="/admin/testimonials"
+            className="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+          >
+            Reviews & Ratings
+          </Link>
+          <Link
+            to="/admin/settings"
+            className="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+          >
+            Site Settings
+          </Link>
+          <div className="sm:ml-auto w-full sm:w-auto mt-2 sm:mt-0">
             <Link
               to="/admin/packages/new"
-              className="btn-gold text-xs py-2 px-3.5"
+              className="btn-gold text-xs py-2 px-3.5 flex items-center justify-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add New Package</span>

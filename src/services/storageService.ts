@@ -6,10 +6,13 @@ import { initialPackages } from '../data/seedPackages';
 import { initialBlogs } from '../data/seedBlogs';
 import { initialSettings } from '../data/seedSettings';
 
+import { Testimonial, initialTestimonials } from '../data/seedTestimonials';
+
 const STORAGE_KEYS = {
   PACKAGES: 'instaholiday_packages_v1',
   ENQUIRIES: 'instaholiday_enquiries_v1',
   BLOGS: 'instaholiday_blogs_v1',
+  TESTIMONIALS: 'instaholiday_testimonials_v1',
   SETTINGS: 'instaholiday_settings_v1',
   AUTH: 'instaholiday_admin_session_v1',
 };
@@ -80,6 +83,30 @@ export const storageService = {
       window.dispatchEvent(new Event('instaholiday_blogs_updated'));
     } catch (err) {
       console.error('Failed to save blogs to storage', err);
+    }
+  },
+
+  // Testimonials
+  getTestimonials(): Testimonial[] {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.TESTIMONIALS);
+      if (!data) {
+        localStorage.setItem(STORAGE_KEYS.TESTIMONIALS, JSON.stringify(initialTestimonials));
+        return initialTestimonials;
+      }
+      return JSON.parse(data);
+    } catch (err) {
+      console.error('Failed to load testimonials from storage', err);
+      return initialTestimonials;
+    }
+  },
+
+  saveTestimonials(testimonials: Testimonial[]): void {
+    try {
+      localStorage.setItem(STORAGE_KEYS.TESTIMONIALS, JSON.stringify(testimonials));
+      window.dispatchEvent(new Event('instaholiday_testimonials_updated'));
+    } catch (err) {
+      console.error('Failed to save testimonials to storage', err);
     }
   },
 
